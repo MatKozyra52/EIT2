@@ -1,7 +1,8 @@
 clear all;
 wspolczyniki=[1 2 3 4 5 6 7 8 9];
-pochodna=zeros(1,length(wspolczyniki)-1);
+n=length(wspolczyniki);
+pochodna=zeros(1,n-1);
 
-for u=length(wspolczyniki)-1:-1:1
-    pochodna(length(wspolczyniki)-u)=u*wspolczyniki(length(wspolczyniki)-u);
+for u=n-1:-1:1
+    pochodna(n-u)=u*wspolczyniki(n-u);
 end
