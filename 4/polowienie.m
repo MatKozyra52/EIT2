@@ -6,7 +6,7 @@ y=polyval (a,x);
 promien = 5;
 punkt = 0;
 clear x y;
-
+dokladnosc = 0.0001;
 
 x1=punkt+rand*2*promien-promien;
 x2=punkt+rand*2*promien-promien;
@@ -23,17 +23,15 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-while (abs(x1-x2)>0.01)
+while (abs(x1-x2)>dokladnosc)
     new = 0.5*(x1+x2);
 
     if(sign(polyval(a,new))==sign(y1))
         x1=new;
-    else if(sign(polyval(a,new))==sign(y2))
+    elseif(sign(polyval(a,new))==sign(y2))
             x2=new;
-        else if(sign(polyval(a,new))==0)
+    elseif(sign(polyval(a,new))==0)
                 wynik = new;
-            end
-        end
     end
 end
 
