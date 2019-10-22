@@ -2,7 +2,7 @@ clear all; close all;
 a=[3, -2, -2, 0, -2];
 x= -2:0.1:3;
 y=polyval (a,x);
-plot(x,y);
+%plot(x,y);
 promien = 5;
 punkt = 0;
 clear x y;
@@ -19,6 +19,8 @@ while (sign(y1)==sign(y2))
     y1=polyval(a,x1);
     y2=polyval(a,x2);
 end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 while (abs(x1-x2)>0.01)
