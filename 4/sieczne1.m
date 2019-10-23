@@ -1,5 +1,5 @@
 clear all; close all;
-a=[2, 0, -2];
+a=[1, 5, -2, -10];
 x= -2:0.1:3;
 y=polyval (a,x);
 %plot(x,y);
