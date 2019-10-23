@@ -9,16 +9,14 @@ dokladnosc = 0.00001;
 clear x y;
 
 
-x1=punkt+rand*2*promien-promien;
-x2=punkt+rand*2*promien-promien;
-y1=polyval(a,x1);
-y2=polyval(a,x2);
-
-while (sign(y1)==sign(y2))
+while 1
     x1=punkt+rand*2*promien-promien;
     x2=punkt+rand*2*promien-promien;
     y1=polyval(a,x1);
     y2=polyval(a,x2);
+    if (sign(y1)~=sign(y2))
+        break
+    end
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
