@@ -13,7 +13,6 @@ while 1
     y2poch = polyval(a2poch, linspace(x1,x2,1000));
     y1=polyval(a,x1);
     y2=polyval(a,x2);
-    y2poch = polyval(a2poch, linspace(x1,x2,1000));
     if (sign(y1)~=sign(y2)) && sign(max(y2poch))==sign(min(y2poch))
         break
     end
