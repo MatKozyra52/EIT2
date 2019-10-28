@@ -1,4 +1,0 @@
-function [x1, x2, iteracje] = styczne(x1,x2,a,dokladnosc)
-
-end
-
