@@ -12,13 +12,4 @@ disp("Czas metody stycznych");
 tic;
 [x3, x4, iteracje2] = styczne2(xa, xb, a, dokladnosc);
 toc;
-disp("Czas metody wbudowanej roots");
-tic;
-roots(a);
-toc;
-
-x=xa:0.001:xb;
-plot(x, polyval(a,x));
-grid on;
-hold on;
-plot([x1,x2,x3,x4], polyval(a,[x1,x2,x3,x4]), 'ro');
+disp("Czas metody wbudowanej root");
