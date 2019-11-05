@@ -1,12 +1,13 @@
 clear all
 close all;
-X = [1,1.1,1.2,1.4,1.6,2,3,6,7];
-Y = sin(X);
+X = [1,2,3,4,5,6,7];
+Y = X.^0.5;
 
 syms x;
-y(x) = lagrane(X,Y)
+y(x) = lagrane(X,Y);
 double(y(X))== Y
-g=sklejanie(X,Y,pi)
+g=sklejanie(X,Y,pi);
+h=whittaker(X,Y)
 
 
 iks=X(1):0.01:X(end);
@@ -31,3 +32,10 @@ hold on;
 grid on;
 plot(X, Y, 'ro');
 title("Metoda sklejania")
+
+figure(3);
+ezplot(h);
+hold on;
+grid on;
+plot(X, Y, 'ro');
+title("Metoda Whittakera")
