@@ -1,0 +1,26 @@
+function y = lagrane(X,Y)
+
+if length(X)~=length(Y)
+    disp("Z³e dane");
+    return;
+end
+
+syms x;
+n = length(X);
+f = 1;
+y = 0;
+
+for k=1:1:n
+    for l=1:1:n
+        if k~=l
+            f = f*((x-X(l))/(X(k)-X(l)))*Y(k);
+        end
+    end
+    y=y+f;
+    z=1;
+end
+
+osx = (min(X):0.1:max(X))
+plot(osx, y())
+end
+
