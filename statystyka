@@ -1,0 +1,48 @@
+clear all
+close all
+load hospital
+
+liczby=double(hospital(:,[3,4,6]))
+
+srednie=mean(liczby)
+odchylenie=std(liczby)
+
+age = liczby(:,1)';
+weight = liczby(:,2)';
+blood1 = liczby(:,3)';
+
+figure(1);
+subplot(2,2,1);
+histogram(age);
+title("Wiek");
+
+subplot(2,2,2);
+histogram(weight);
+title("Waga");
+
+subplot(2,2,3);
+histogram(blood1);
+title("Ciśnienie");
+
+pdage=fitdist(age', 'Normal');
+dx= 0:1:70;
+y = pdf(pdage,dx);
+
+figure(2);
+yyaxis left;
+plot(dx,y);
+hold on;
+yyaxis right;
+histogram(age);
+title("Wiek");
+
+figure(3);
+boxplot(hospital.Weight, hospital.Sex)
+
+figure (4);
+xfamale=hospital(hospital.Sex=='Female', :);
+xmale=hospital(hospital.Sex=='Male', :);
+histfit(xfamale.Weight);
+hold on;
+histfit(xmale.Weight);
+
