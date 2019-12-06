@@ -1,0 +1,4 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/acer/Documents/VHDL/lab3/hottobin/hottobin.srcs/sources_1/new/hottobin.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'hottobin'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/acer/Documents/VHDL/lab3/hottobin/hottobin.srcs/sim_1/new/hottobin_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'hottobin_tb'

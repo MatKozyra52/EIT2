@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Webtalk v2019.2 (64-bit)
+# SW Build 2708876 on Wed Nov  6 21:40:23 MST 2019
+# IP Build 2700528 on Thu Nov  7 00:09:20 MST 2019
+# Start of session at: Sat Nov 30 18:56:52 2019
+# Process ID: 1368
+# Current directory: C:/Users/acer/Documents/VHDL/lab1/d1z3/d1z3.sim/sim_1/behav/xsim
+# Command line: wbtcv.exe -mode batch -source C:/Users/acer/Documents/VHDL/lab1/d1z3/d1z3.sim/sim_1/behav/xsim/xsim.dir/d1z3_tb_behav/webtalk/xsim_webtalk.tcl -notrace
+# Log file: C:/Users/acer/Documents/VHDL/lab1/d1z3/d1z3.sim/sim_1/behav/xsim/webtalk.log
+# Journal file: C:/Users/acer/Documents/VHDL/lab1/d1z3/d1z3.sim/sim_1/behav/xsim\webtalk.jou
+#-----------------------------------------------------------
+source C:/Users/acer/Documents/VHDL/lab1/d1z3/d1z3.sim/sim_1/behav/xsim/xsim.dir/d1z3_tb_behav/webtalk/xsim_webtalk.tcl -notrace
