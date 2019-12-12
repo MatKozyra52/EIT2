@@ -1,0 +1,67 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+
+entity dff is
+    Port ( Reset : in STD_LOGIC := '0';
+           clk : in STD_LOGIC;
+           Q : out STD_LOGIC_vector(3 downto 0):="1111" );
+end dff;
+
+architecture Behavioral of dff is
+begin
+    process(clk,reset)
+    variable Qt : std_logic_vector(3 downto 0) := "1111";
+    begin
+    if (reset = '0') then
+      if(rising_edge(clk)) then
+            if Qt > 7 then
+                Q <= Qt;
+                Qt := Qt - 1;
+            else
+            Qt := "1111";
+            Q <= Qt;
+            Qt := Qt-1;
+            end if;
+        end if;
+     else
+        Qt := "1111";
+        Q <= Qt;
+        Qt := Qt-1;
+        
+    end if;
+    end process;
+    
+end Behavioral;
+-------------------------------------------
+TB
+-------------------------------------------
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity dff_tb is
+--  Port ( );
+end dff_tb;
+
+architecture Behavioral of dff_tb is
+signal zegar, reset: std_logic := '0';
+signal Q: std_logic_vector(3 downto 0) ;
+begin
+UUT: entity work.dff port map (Clk => zegar, reset=>reset, Q=>Q);
+
+zegar_p: process begin
+   zegar <= '1'; 
+   wait for 40ns;
+   zegar <= '0';
+   wait for 40ns;
+end process;
+
+reset_p: process begin
+    reset <= '0';
+    wait for 210ns;
+    reset <= '1';
+    wait for 50ns;
+end process;
+end Behavioral;
