@@ -31,15 +31,17 @@ end licznik;
 architecture Behavioral of licznik is
     
 begin
-
-    
-    zliczanie: process ( clk )
+zliczanie: process ( clk, R )
         variable dQ : std_logic_vector(3 downto 0) := "0000" ;
     begin
-        if (clk'event and clk='1') then
-            dQ := dQ + 1;
-        end if;
+    if (R = '1') then
+        dQ := "0000";
+    end if;
+    
+    if (clk'event and clk='1') then
+        dQ := dQ + 1;
+    end if;
+    Q <=dQ;
     end process;
 
-Q <= "0000" when R = '1' else dQ;
 end Behavioral;
