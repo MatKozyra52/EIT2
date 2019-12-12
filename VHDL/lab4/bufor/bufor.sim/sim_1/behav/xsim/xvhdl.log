@@ -1,0 +1,4 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/acer/Documents/GitHub/EIT2/VHDL/lab4/bufor/bufor.srcs/sources_1/new/bufor.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'bufor'
+INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/acer/Documents/GitHub/EIT2/VHDL/lab4/bufor/bufor.srcs/sim_1/new/bufor_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'bufor_tb'

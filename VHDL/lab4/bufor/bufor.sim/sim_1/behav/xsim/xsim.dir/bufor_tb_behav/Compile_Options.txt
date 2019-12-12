@@ -1,0 +1,1 @@
+-wto "daf13d924d774cfc8d5119ca678edb37" --incr --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "secureip" --snapshot "bufor_tb_behav" "xil_defaultlib.bufor_tb" -log "elaborate.log" 
