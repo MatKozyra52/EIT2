@@ -1,0 +1,7 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../pierscionek Johna.srcs/sources_1/new/pierscionek Johna.vhd" \
+"../../../../pierscionek Johna.srcs/sim_1/new/pierscionek_Johna_tb.vhd" \
+
+# Do not sort compile order
+nosort

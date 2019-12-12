@@ -21,8 +21,8 @@ variable licznik : integer := 0;
 begin
     if (clk'event and clk = '1' and ce = '1') then
         licznik := licznik + 1;
-        if (licznik > 5) then licznik := 1; end if;
-        
+        if (licznik > 5) then licznik := 1; end if; ---reset licznika
+-------------------odczyt-----------------------    
         case licznik is
             when 1 => wyj <=s1;
             when 2 => wyj <=s2;
@@ -31,7 +31,7 @@ begin
             when 5 => wyj <=s5;
             when others => wyj <= "XXXX";
        end case;
-
+-------------------zapis-------------------------
         case licznik is
             when 1 => s1 <=wej;
             when 2 => s2 <=wej;
