@@ -1,4 +1,7 @@
-Running: xsim.dir/liczniik_tb_behav/xsimk.exe -simmode gui -wdb liczniik_tb_behav.wdb -simrunnum 0 -socket 65316
+Running: xsim.dir/liczniik_tb_behav/xsimk.exe -simmode gui -wdb liczniik_tb_behav.wdb -simrunnum 0 -socket 65353
 Design successfully loaded
-Design Loading Memory Usage: 5316 KB (Peak: 5316 KB)
+Design Loading Memory Usage: 5328 KB (Peak: 5328 KB)
 Design Loading CPU Usage: 15 ms
+Simulation completed
+Simulation Memory Usage: 5928 KB (Peak: 5928 KB)
+Simulation CPU Usage: 15 ms
