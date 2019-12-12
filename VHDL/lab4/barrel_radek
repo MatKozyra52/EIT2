@@ -1,0 +1,57 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+
+entity barrel is
+port (  clk: in std_logic;
+        w: in unsigned (6 downto 0);
+        s: in unsigned (2 downto 0);
+        y: out unsigned (6 downto 0)
+    );
+end barrel;
+
+architecture Behavioral of barrel is
+
+begin
+  process (s,w)
+  begin
+  case s is
+  when "000" => y<=w;
+  when "001" => y<=w ror(1);
+  when "010" => y<=w ror(2);
+  when "011" => y<=w ror(3);
+  when "100" => y<=w ror(4);
+  when "101" => y<=w ror(5);
+  when "110" => y<=w ror(6);
+  when "111" => y<=w ror(7);
+  when others => y<="0000000";
+  end case;
+  end process;
+  
+end Behavioral;
+
+#################################################################
+############################## TB ###############################
+#################################################################
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+entity barrel_tb is 
+end barrel_tb;
+
+architecture behavioral of barrel_tb is
+signal clk: std_logic :='0';
+signal  W: unsigned (6 downto 0) := "0001111";
+signal  s: unsigned (2 downto 0) := "001";
+signal  y: unsigned (6 downto 0);
+begin 
+    UTT: entity work.barrel port map (clk=>clk,W=>w, s=>s,y=>y);
+process begin
+    clk <= '0';
+    wait for 40ns;
+    clk<='1';
+    wait for 40ns;
+end process;
+end behavioral;
