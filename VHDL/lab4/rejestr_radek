@@ -1,0 +1,112 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+
+entity rejestr is
+    Port ( clk : in STD_LOGIC := '0';
+           reset: in std_logic := '0';
+           right_left : in STD_LOGIC := '0';
+           set_right : in STD_LOGIC := '1';
+           set_left : in STD_LOGIC := '0';
+           Q: out STD_LOGIC_VECTOR (5 downto 0) := "000000");
+end rejestr;
+
+architecture Behavioral of rejestr is
+signal licznik: std_logic_vector(5 downto 0) := "000000";
+begin
+--------- proces ------------
+przerzutnik: process(clk,reset)
+begin
+if (rising_edge(clk)) then
+----------------Dopisywanie--------------------
+    if (set_right = '1' and right_left = '1') then 
+      licznik(0) <= '1';
+    elsif (set_right = '0' and right_left = '1') then
+      licznik(0) <='0';
+    elsif (set_left = '1' and right_left = '0' ) then
+      licznik(licznik'left) <= '1';
+    elsif (set_left = '0' and right_left = '0') then
+      licznik(licznik'left) <= '0';
+    end if;
+    ------------Przesuwanie------------------
+    if (right_left = '1') then
+      for i in 0 to 4 loop
+      licznik(licznik'left-i)<=licznik(licznik'left-(i+1));
+      end loop;
+    else
+      for i in 0 to 4 loop
+        licznik(licznik'left-(i+1))<=licznik(licznik'left-i);
+      end loop;
+    end if;
+   ------------Koniec przesuwania------------------
+end if;
+----------Bezwzględny reset---------------------
+    if (reset = '1') then 
+     licznik <= "000000"; 
+    end if;
+end process;
+Q <= licznik;
+end Behavioral;
+################################################################################################################################
+######################################################### Testbench ############################################################
+################################################################################################################################
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity rejestr_tb is
+--  Port ( );
+end rejestr_tb;
+
+architecture Behavioral of rejestr_tb is
+signal zegar: std_logic := '0';
+signal sr,sl,rl,res: std_logic := '0';
+signal Q: std_logic_vector (5 downto 0) ;
+begin
+UUT: entity work.rejestr port map (Clk => zegar, reset=>res, Q=>Q, set_right => sr, set_left=>sl,right_left=>rl);
+---------------------------------------------------------------------------
+res_proc: process begin
+    res<='0';
+    wait for 150ns;
+    res<='1';
+    wait for 10ns;
+end process;
+--------------------------------
+zegar_p: process begin
+    zegar<='0';
+    wait for 40ns;
+    zegar<='1';
+    wait for 40ns;
+    end process;
+   --------------------------------------
+  ustawianiePrawo: process begin
+   wait for 40ns;
+   sr <= '1';
+   wait for 40ns;
+   sr <= '0';
+   wait for 120ns;
+   sr <= '1';
+   wait for 40ns;
+   sr <= '0';
+    
+   end process;
+     --------------------------------------
+  ustawianieLewo: process begin
+   wait for 40ns;
+   sl <= '1';
+   wait for 40ns;
+   sl <= '0';
+   wait for 80ns;
+   sl <= '1';
+   wait for 80ns;
+   sl <= '0';
+    
+   end process;
+   -------------------------------
+  kierunek: process begin
+  rl <= '1';
+  wait for 420ns;
+  rl <= '0';
+  wait for 420ns;
+  end process;
+  ----------------------------------
+end Behavioral;
