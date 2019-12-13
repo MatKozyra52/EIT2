@@ -1,0 +1,12 @@
+
+{ 
+    crc :  6668634402037851958  , 
+    ccp_crc :  0  , 
+    cmdline : " -wto 0b07aca629f74a2e8341b93078c6cf31 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L secureip --snapshot dzielnikclk_behav xil_defaultlib.dzielnikclk" , 
+    buildDate : "Nov  6 2019" , 
+    buildTime : "21:57:16" , 
+    linkCmd : "D:\\Programy\\Xilinx\\Vivado\\2019.2\\data\\..\\tps\\mingw\\6.2.0\\win64.o\\nt\\bin\\gcc.exe -Wa,-W  -O -Wl,--stack,104857600 -o \"xsim.dir/dzielnikclk_behav/xsimk.exe\"   \"xsim.dir/dzielnikclk_behav/obj/xsim_0.win64.obj\" \"xsim.dir/dzielnikclk_behav/obj/xsim_1.win64.obj\" -L\"D:\\Programy\\Xilinx\\Vivado\\2019.2\\lib\\win64.o\" -lrdi_simulator_kernel   -lrdi_simbridge_kernel" , 
+    aggregate_nets : 
+    [ 
+    ] 
+} 

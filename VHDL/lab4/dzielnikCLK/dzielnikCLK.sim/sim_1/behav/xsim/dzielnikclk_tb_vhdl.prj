@@ -1,0 +1,7 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../dzielnikCLK.srcs/sources_1/new/dzielnikclk.vhd" \
+"../../../../dzielnikCLK.srcs/sim_1/new/dzielnikclk_tb.vhd" \
+
+# Do not sort compile order
+nosort
