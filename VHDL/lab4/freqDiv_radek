@@ -1,0 +1,70 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+
+entity freq is
+    Port ( clk : in STD_LOGIC;
+           wyj : out STD_LOGIC;
+           dziel : in STD_LOGIC_vector(2 downto 0):="110";
+           test : out std_logic := '0');
+end freq;
+
+architecture Behavioral of freq is
+signal control: std_logic := '0';
+signal Q: std_logic := '0';
+
+begin
+process (clk,dziel)
+variable zbocza: integer :=0;   --do zliczania zboczy
+
+begin
+    if (rising_edge(clk)) then
+    ------------Stany wysokie-----------
+        if( unsigned(dziel) > zbocza and control = '0') then
+            Q <= '1';
+            zbocza := zbocza +1;
+            if (unsigned(dziel) = zbocza) then 
+              control <= '1';
+              end if;
+    ------------Stany niskie------------
+       elsif( unsigned(dziel)>=zbocza and control = '1') then
+            Q <= '0';
+            zbocza := zbocza -1;
+            if (zbocza = 0) then 
+                control <= '0';
+                end if;
+    end if;     
+    end if;
+    if(dziel = "000") then
+            Q<=clk;
+            end if;
+    
+end process;
+wyj <=Q ;
+end Behavioral;
+
+##################################################################
+#################################### TB ##########################
+##################################################################
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity freq_tb is
+--  Port ( );
+end freq_tb;
+
+architecture Behavioral of freq_tb is
+signal zegar,Q,test: std_logic;
+begin
+UUT: entity work.freq port map (Clk => zegar, wyj=>Q,test => test);
+
+process begin
+zegar <= '0';
+wait for 40ns;
+zegar<= '1';
+wait for 40ns;
+end process;
+
+end Behavioral;
