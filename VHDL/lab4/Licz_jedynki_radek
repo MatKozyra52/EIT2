@@ -1,0 +1,48 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+
+entity jedynki is
+    Port ( --clk: in std_logic := '0';
+           Q : out STD_LOGIC_VECTOR (4 downto 0);
+           input : in STD_LOGIC_VECTOR (24 downto 0));
+end jedynki;
+
+architecture Behavioral of jedynki is
+signal Qt: std_logic_vector(4 downto 0) := "00000";
+
+begin
+-----------Liczydło--------------------------
+process (input) variable ip: integer := 0; -- zmienna do liczenia
+begin 
+
+    for i in 0 to input'length-1 loop
+        if (input(i) = '1') then
+            ip :=ip+1;
+        end if;
+    end loop;
+    Qt<= std_logic_vector(to_unsigned(ip,Qt'length)); --zapis liczby jako wektor
+ -------------- Koniec liczydła ---------------
+end process;
+    Q <= Qt;
+end Behavioral;
+
+###########################################################
+######################### TB ##############################
+###########################################################
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity jedynki_tb is
+--  Port ( );
+end jedynki_tb;
+
+architecture Behavioral of jedynki_tb is
+
+signal input: std_logic_vector (24 downto 0) := "0101100110101010100100101" ;
+signal Q: std_logic_vector (4 downto 0);
+begin
+UUT: entity work.jedynki port map ( input => input, Q=>Q);
+
+end Behavioral;
