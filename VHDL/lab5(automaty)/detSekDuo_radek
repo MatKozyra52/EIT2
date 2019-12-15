@@ -1,0 +1,99 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity detSekDuo is
+    Port ( clk : in STD_LOGIC;
+           wejscie : in STD_LOGIC;
+           wyjscie : out STD_LOGIC_VECTOR (1 downto 0));
+end detSekDuo;
+
+architecture Behavioral of detSekDuo is
+type automat is (s03,s02,s01,s0,s11,s12,s13);
+signal s: automat;
+begin
+process (s) begin
+    case s is
+        when s03 => wyjscie <="10";
+        when s13 => wyjscie <="01";
+        when others => wyjscie <= "00";
+    end case;
+end process;
+
+process (clk, wejscie) begin
+if rising_edge(clk) then
+    case s is
+        when s0 => if wejscie='1' then s<=s11; else s<=s01; end if;
+        when s11=> if wejscie='1' then s<=s12; else s<=s01; end if;
+        when s12=> if wejscie='1' then s<=s13; else s<=s01; end if;
+        when s13=> if wejscie='1' then s<=s11; else s<=s01; end if;
+       
+        when s01=> if wejscie='0' then s<=s02; else s<=s11; end if;
+        when s02=> if wejscie='0' then s<=s03; else s<=s11; end if;
+        when s03=> if wejscie='0' then s<=s01; else s<=s11; end if;
+    end case;
+end if;
+end process;
+
+##################################################### TB ############################################
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity detSekDuo_tb is
+--  Port ( );
+end detSekDuo_tb;
+
+architecture Behavioral of detSekDuo_tb is
+signal wejscie, clk: std_logic :='0';
+signal wyjscie: std_logic_vector (1 downto 0) := "00";
+begin
+UTT: entity work.detSekDuo port map(clk => clk,
+                                    wejscie => wejscie,
+                                    wyjscie => wyjscie);
+                                    
+zegar: process begin
+    clk <= '1';
+    wait for 40ns;
+    clk <='0';
+    wait for 40ns;
+    end process zegar;
+    
+
+sygnal: process begin
+    wejscie<='1';
+    wait for 80ns;
+    wejscie<='1';
+    wait for 80ns;
+    wejscie<='0';
+    wait for 80ns;
+    wejscie<='0';
+    wait for 80ns;
+    wejscie<='0';
+    wait for 80ns;
+    wejscie<='1';
+    wait for 80ns;
+    wejscie<='1';
+    wait for 80ns;
+    wejscie<='1';
+    wait for 80ns;
+    wejscie<='0';
+    wait for 80ns;
+    wejscie<='1';
+    wait for 80ns;
+    wejscie<='0';
+    wait for 80ns;
+    wejscie<='1';
+    wait for 80ns;
+    wejscie<='1';
+    wait for 80ns;
+    wejscie<='0';
+    wait for 80ns;
+    wejscie<='1';
+    wait for 80ns;
+    wejscie<='1';
+    wait for 80ns;
+    wejscie<='1';
+    wait for 80ns;
+    wejscie<='X';
+    wait for 80ns;
+    end process sygnal;
+end Behavioral;
