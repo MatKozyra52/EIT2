@@ -1,0 +1,91 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity SumSzer is
+    Port ( A : in STD_LOGIC;
+           B : in STD_LOGIC;
+           clk: in std_logic;
+           Wynik : out STD_LOGIC);
+end SumSzer;
+
+architecture Behavioral of SumSzer is
+type stan is (c0,c1);
+signal c: stan;
+signal przeniesienie: std_logic;
+begin
+wyjscie: process (c) begin
+    if (c=c1) then przeniesienie<='1';
+    else przeniesienie <='0';
+    end if;
+end process wyjscie;
+sumator: process(clk,A,B) begin
+    if (rising_edge(clk)) then
+        case c is
+            when c0 => if (A ='1' and B='1') then c<=c1; else c<=c0; end if;
+            when c1 => if (A ='0' and B='0') then c<=c0; else c<=c1; end if;
+        end case;
+        wynik<=(A xor B xor przeniesienie);
+    end if;
+    
+end process sumator;
+end Behavioral;
+
+######################################## TB ################################
+############################################################################
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity SumSzer_tb is
+--  Port ( );
+end SumSzer_tb;
+
+architecture Behavioral of SumSzer_tb is
+signal clk, A, B, wynik: std_logic := '0';
+begin
+UTT: entity work.SumSzer port map (clk => clk,
+                                   wynik => wynik,
+                                   A=>A,
+                                   B=>B);
+                                   
+zegarek: process begin
+    clk <= '0';
+    wait for 40ns;
+    clk <= '1';
+    wait for 40ns;
+end process zegarek;
+
+SygnalA: process begin
+    wait for 120ns;
+    A<='1';
+    wait for 80ns;
+    A<='0';
+    wait for 80ns;
+    A<='1';
+    wait for 80ns;
+    A<='1';
+    wait for 80ns;
+    A<='0';
+    wait for 80ns;
+    A<='1';
+    wait for 40ns;
+    A<='U';
+end process sygnalA;
+                       
+sygnalB: process begin
+    wait for 120ns;
+    B<='1';
+    wait for 80ns;
+    B<='1';
+    wait for 80ns;
+    B<='0';
+    wait for 80ns;
+    B<='1';
+    wait for 80ns;
+    B<='0';
+    wait for 80ns;
+    B<='0';
+    wait for 40ns;
+    B<='U';
+end process sygnalb;            
+                                   
+end Behavioral;
