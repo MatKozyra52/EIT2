@@ -1,0 +1,120 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity Subtraktor is
+    Port ( Bin : in STD_LOGIC;
+           wejscieU2 : in STD_LOGIC;
+           Wyjscie : out STD_LOGIC := '1';
+           clk : in STD_LOGIC;
+           jedynka: in std_logic := '0');
+end Subtraktor;
+
+architecture Behavioral of Subtraktor is
+type stany is (c0,c1);
+signal c,dodana: stany := c0;
+signal u2,u2_konw,u2_prze,dod_prze: std_logic := '0';
+begin
+
+przenosi: process (c) begin
+    case c is
+        when c1 => u2_prze <= '1';
+        when others => u2_prze <='0';
+    end case;
+end process;
+---------------------------------------------------------
+koder_u2: process(clk,u2,jedynka) 
+begin
+if rising_edge(clk) then
+    case c is
+        when c0 => if (u2='1' and jedynka='1') then c<=c1; else c<=c0; end if;
+        when c1 => if (u2='0' and jedynka ='0') then c<=c0; else c<=c1; end if; 
+    end case;
+    u2_konw<= (u2 xor jedynka xor u2_prze);    
+end if;
+end process;
+----------------------------------------------------------------
+wyjscieu2: process(clk,wejscieu2) begin
+    u2<=(not wejscieu2);
+end process;
+-----------------------------------------------------------------
+dodawanie: process (dodana) begin
+    case dodana is
+        when c1 => dod_prze <='1';
+        when others => dod_prze <='0';
+    end case;
+end process dodawanie;
+
+odejmowanie: process (clk, u2_konw, bin) begin
+    if(rising_edge(clk))then
+        case dodana is 
+            when c0 => if(u2_konw='1' and bin='1') then dodana <= c1; else dodana <= c0; end if;
+            when c1 => if(u2_konw='0' and bin='0') then dodana <= c0; else dodana <= c1;end if;
+        end case;
+        wyjscie<=(u2_konw xor bin xor dod_prze);
+    end if;
+    
+end process;
+end Behavioral;
+
+########################################################### TB ##############################################
+#############################################################################################################
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity subtraktor_tb is
+--  Port ( );
+end subtraktor_tb;
+
+architecture Behavioral of subtraktor_tb is
+signal clk,weju2,bin,jedynka:std_logic := '0';
+signal wyjscie:std_logic := '1';
+begin
+UTT: entity work.subtraktor port map (clk =>clk,
+                                      wejscieu2=>weju2,
+                                      bin=>bin,
+                                      wyjscie=>wyjscie,
+                                      jedynka=>jedynka);
+
+
+zegar: process begin
+    clk <='0';
+    wait for 40ns;
+    clk <='1';
+    wait for 40ns;
+end process zegar;
+
+u2_proces: process begin
+    wait for 40ns;
+    weju2<='0';
+    wait for 80ns;
+    weju2<='1';
+    wait for 80ns;
+    weju2<='1';
+    wait for 80ns;
+    weju2<='0';
+    wait for 160ns;
+    weju2<='X';
+    wait for 120ns;
+end process u2_proces;
+bin_proces: process begin
+    wait for 120ns;
+    bin<='0';
+    wait for 80ns;
+    bin<='0';
+    wait for 80ns;
+    bin<='0';
+    wait for 80ns;
+    bin<='1';
+    wait for 80ns;
+    bin<='X';
+    wait for 120ns;
+end process bin_proces;
+jedyny: process begin
+    jedynka <='1';
+    wait for 120ns;
+    jedynka <='0';
+    wait for 280ns;
+    jedynka <='X';
+    wait for 160ns;
+end process;
+end Behavioral;
