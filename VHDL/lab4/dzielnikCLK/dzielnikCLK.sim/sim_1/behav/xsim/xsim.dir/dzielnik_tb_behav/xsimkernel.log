@@ -2,3 +2,6 @@ Running: xsim.dir/dzielnik_tb_behav/xsimk.exe -simmode gui -wdb dzielnik_tb_beha
 Design successfully loaded
 Design Loading Memory Usage: 5264 KB (Peak: 5264 KB)
 Design Loading CPU Usage: 62 ms
+Simulation completed
+Simulation Memory Usage: 5832 KB (Peak: 5832 KB)
+Simulation CPU Usage: 78 ms
