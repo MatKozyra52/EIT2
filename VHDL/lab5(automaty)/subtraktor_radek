@@ -4,7 +4,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity Subtraktor is
     Port ( Bin : in STD_LOGIC;
            wejscieU2 : in STD_LOGIC;
-           Wyjscie : out STD_LOGIC;
+           Wyjscie : out STD_LOGIC := '1';
            clk : in STD_LOGIC;
            jedynka: in std_logic := '0');
 end Subtraktor;
@@ -23,13 +23,15 @@ przenosi: process (c) begin
 end process;
 ---------------------------------------------------------
 koder_u2: process(clk,u2,jedynka) 
+variable u2k: std_logic;
 begin
 if rising_edge(clk) then
+
     case c is
         when c0 => if (u2='1' and jedynka='1') then c<=c1; else c<=c0; end if;
         when c1 => if (u2='0' and jedynka ='0') then c<=c0; else c<=c1; end if; 
     end case;
-    u2_konw<= (u2 xor jedynka xor u2_prze);
+    u2_konw<= (u2 xor jedynka xor u2_prze);    
 end if;
 end process;
 ----------------------------------------------------------------
@@ -40,7 +42,7 @@ end process;
 dodawanie: process (dodana) begin
     case dodana is
         when c1 => dod_prze <='1';
-        when c0 => dod_prze <='0';
+        when others => dod_prze <='0';
     end case;
 end process dodawanie;
 
@@ -55,6 +57,7 @@ odejmowanie: process (clk, u2_konw, bin) begin
     
 end process;
 end Behavioral;
+
 ########################################################### TB ##############################################
 #############################################################################################################
 library IEEE;
@@ -65,13 +68,15 @@ entity subtraktor_tb is
 end subtraktor_tb;
 
 architecture Behavioral of subtraktor_tb is
-signal clk,weju2,bin,wyjscie,jedynka:std_logic := '0';
+signal clk,weju2,bin,jedynka:std_logic := '0';
+signal wyjscie:std_logic := '1';
 begin
 UTT: entity work.subtraktor port map (clk =>clk,
                                       wejscieu2=>weju2,
                                       bin=>bin,
                                       wyjscie=>wyjscie,
                                       jedynka=>jedynka);
+
 
 zegar: process begin
     clk <='0';
@@ -96,7 +101,7 @@ u2_proces: process begin
     wait for 120ns;
 end process u2_proces;
 bin_proces: process begin
-    wait for 40ns;
+    wait for 120ns;
     bin<='0';
     wait for 80ns;
     bin<='0';
@@ -106,7 +111,7 @@ bin_proces: process begin
     bin<='1';
     wait for 80ns;
     bin<='0';
-    wait for 160ns;
+    wait for 80ns;
     bin<='X';
     wait for 120ns;
 end process bin_proces;
