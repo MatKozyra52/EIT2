@@ -1,0 +1,7 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../swiatla4.srcs/sources_1/new/swiatla4.vhd" \
+"../../../../swiatla4.srcs/sim_1/new/swiatla4_tb.vhd" \
+
+# Do not sort compile order
+nosort
