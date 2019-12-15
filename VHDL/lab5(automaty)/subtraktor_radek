@@ -94,8 +94,6 @@ u2_proces: process begin
     weju2<='1';
     wait for 80ns;
     weju2<='0';
-    wait for 80ns;
-    weju2<='0';
     wait for 160ns;
     weju2<='X';
     wait for 120ns;
@@ -110,8 +108,6 @@ bin_proces: process begin
     wait for 80ns;
     bin<='1';
     wait for 80ns;
-    bin<='0';
-    wait for 80ns;
     bin<='X';
     wait for 120ns;
 end process bin_proces;
@@ -119,7 +115,7 @@ jedyny: process begin
     jedynka <='1';
     wait for 120ns;
     jedynka <='0';
-    wait for 360ns;
+    wait for 280ns;
     jedynka <='X';
     wait for 160ns;
 end process;
