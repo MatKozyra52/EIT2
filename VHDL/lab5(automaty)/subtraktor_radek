@@ -23,10 +23,8 @@ przenosi: process (c) begin
 end process;
 ---------------------------------------------------------
 koder_u2: process(clk,u2,jedynka) 
-variable u2k: std_logic;
 begin
 if rising_edge(clk) then
-
     case c is
         when c0 => if (u2='1' and jedynka='1') then c<=c1; else c<=c0; end if;
         when c1 => if (u2='0' and jedynka ='0') then c<=c0; else c<=c1; end if; 
