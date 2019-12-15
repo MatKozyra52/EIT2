@@ -1,0 +1,78 @@
+entity det3bit is
+    Port ( clk : in STD_LOGIC;
+           wyjscie : out STD_LOGIC;
+           sygnal : in STD_LOGIC);
+end det3bit;
+
+architecture Behavioral of det3bit is
+type stan is (s0,s1,s2,s3);
+signal s: stan;
+begin
+wynik: process (s) begin
+    case s is
+    when s3 => wyjscie <='1';
+    when others => wyjscie<='0';
+    end case;
+end process wynik;
+
+automat: process (clk, sygnal) begin
+
+    case s is
+    when s0 => if sygnal='1' then s<=s1; else s<=s0;end if;
+    when s1 => if sygnal='0' then s<=s2; else s<=s0; end if;
+    when s2 => if sygnal='1' then s<=s3; else s<=s0; end if;
+    when s3 => if sygnal='1' then s<=s1; else s<=s0; end if;
+    end case;
+
+end process automat;
+end Behavioral;
+############################## TB ########################################
+##########################################################################
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity dek3bit_tb is
+--  Port ( );
+end dek3bit_tb;
+
+architecture Behavioral of dek3bit_tb is
+signal clk, wynik, szukana: std_logic;
+begin
+UTT: entity work.det3bit port map (clk => clk,
+                                   wyjscie => wynik,
+                                   sygnal => szukana);
+zegar: process begin
+    clk<='0';
+    wait for 40ns;
+    clk<='1';
+    wait for 40ns;
+end process zegar;
+ciag_bitow: process begin
+    szukana <= '1';
+    wait for 40ns;
+    szukana <='0';
+    wait for 40ns;
+    szukana <='0';
+    wait for 40ns;
+    szukana <='0';
+    wait for 40ns;
+    szukana <='1';
+    wait for 40ns;
+    szukana <='0';
+    wait for 40ns;
+    szukana <='1';
+    wait for 40ns;
+    szukana <='1';
+    wait for 40ns;
+    szukana <='0';
+    wait for 40ns;
+    szukana <='0';
+    wait for 40ns;
+    szukana <='0';
+    wait for 40ns;
+    szukana <='1';
+    wait for 40ns;
+    szukana <='1';
+    wait for 40ns;
+end process ciag_bitow;
+
+end Behavioral;
