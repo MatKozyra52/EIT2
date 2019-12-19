@@ -2,28 +2,28 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 entity my7seg is
     Port (clk: in std_logic := '0';
-          anody: out std_logic_vector(1 downto 0) := "00";
+          anody: out std_logic_vector(7 downto 0) := "00000001";    --zalaczony 1 7seg
           wyswietl: out std_logic_vector(6 downto 0) := "1111111"; -- ABCDEFG 7seg
           czujnik: in std_logic_vector(1 downto 0) := "00";
           alarm: out std_logic := '0');
 end my7seg;
 
 architecture Behavioral of my7seg is
-type pozycja is (pion,poziom);
+type pozycja is (lewo,gora,prawo,dol);
 signal drzwi: pozycja;
-signal odswiez: integer range 1 to 10;
-signal obroty: integer :=0;
-signal zegar_counter: integer := 0;
 signal w_clk: std_logic := '0';
+
 begin
 
-zegar:process(clk) begin
+zegar:process(clk) 
+variable zegar_counter: integer := 0;
+begin
     if(rising_edge(clk)) then
-        if zegar_counter = 1e5 then    --1kHz ma zegar wyswietlacza
-            zegar_counter <= 0;
+        if zegar_counter = 1e6/2 then    --100MHz/1e6=100Hz ma zegar 
+            zegar_counter := 0;
             w_clk <=not(w_clk);
         else
-            zegar_counter<=zegar_counter + 1;
+            zegar_counter := zegar_counter + 1;
         end if;
     end if;
 end process zegar;
@@ -31,60 +31,71 @@ end process zegar;
 obrot: process (w_clk,drzwi) begin
 if (rising_edge(w_clk)) then
     case drzwi is
-    when poziom => 
-        if (odswiez < 6) then         --odswież/2 zboczy narastających
-            anody<="01";
-            wyswietl <= "1101110";      -- CG segments of disp0
-            odswiez <= odswiez+1;
-        else
-            anody<="10";
-            wyswietl <= "1111100";      -- FG segments of disp1
-            odswiez<=odswiez + 1;
-            if (odswiez=10) then odswiez <=1; end if;   
-        end if;
-    when pion =>
-        if (odswiez < 6) then
-            anody<="01";
-            wyswietl<="0111101";        -- AF segmets of disp 0
-            odswiez<=odswiez+1;
-        else
-            anody<="10";
-            wyswietl<="1100111";        -- CD segmets of disp 1
-            odswiez<=odswiez+1;
-            if (odswiez=10) then odswiez<=1; end if;
-        end if;
+    when lewo => 
+            wyswietl <= "0011110";      -- CG segments of disp0
+    when gora =>
+            wyswietl<="1011100";        -- AF segmets of disp 0
+    when prawo =>
+        wyswietl<="0111100";
+    when dol => 
+        wyswietl <="0011101";
     end case;
 end if;
 end process obrot;
 
-process (w_clk,czujnik) begin
-if rising_edge(w_clk) then
+process (clk,w_clk,czujnik) 
+variable prev: integer :=1;
+variable obroty: integer :=0;
+begin
+if  rising_edge(w_clk) then
     case czujnik is
         when "00" => 
+            if prev = 0 and obroty < 300 then obroty := obroty - 75;
+            elsif prev = 0 and obroty >300 and obroty < 500 then obroty := obroty - 150;
+            elsif prev = 0 and obroty >500 and obroty < 700 then obroty := obroty - 225;
+            elsif prev = 0 and obroty >700 then obroty := obroty - 305; end if;
+            prev :=1;
             alarm<='0';
-            if obroty <2500 then
-                drzwi <= poziom;
-                obroty <= obroty + 1;
-            else
-                drzwi <= pion;
-                obroty <= obroty +1;
-                if obroty=5000 then obroty<=1; end if;
+            if obroty <125  then
+                drzwi <= lewo;
+                obroty := obroty + 1;
+            elsif (obroty >=125 and obroty <250)  then
+                drzwi <= gora;
+                obroty := obroty + 1;
+            elsif (obroty >=250 and obroty <375)  then
+                drzwi <= prawo;
+                obroty := obroty + 1;
+            elsif(obroty >= 375)  then
+                drzwi <= dol;
+                obroty := obroty +1;
+                if obroty=500 then obroty := 0; end if;
             end if;
-        when "11" => alarm <= '1'; obroty <=1;
+        when "11" => alarm <= '1';
         when others => -- 01 or 10 bo błędy wywala że nie ma others xD
+            if prev = 1 and obroty < 250 then obroty := obroty + 85;
+            elsif prev = 1 and obroty >=250 and obroty < 375 then obroty := obroty + 150;
+            elsif prev = 1 and obroty >=375 then obroty := obroty + 225; end if;
+            prev := 0;
             alarm<='0';
-            if obroty <4000 then
-                drzwi <= poziom;
-                obroty <= obroty + 1;
-            else
-                drzwi <= pion;
-                obroty <= obroty +1;
-                if obroty=8000 then obroty<=1; end if;
+            if obroty <200  then
+                drzwi <= lewo;
+                obroty := obroty + 1;
+            elsif (obroty >=200 and obroty <400)  then
+                drzwi <= gora;
+                obroty := obroty + 1;
+            elsif (obroty >=400 and obroty <600)  then
+                drzwi <= prawo;
+                obroty := obroty + 1;
+            elsif (obroty >=600) then
+                drzwi <= dol;
+                obroty := obroty + 1;
+                if obroty=800 then obroty := 0; end if;
             end if;
     end case;
 end if;
 end process;
 end Behavioral;
+
 
 ###################################################### TB ################################################
 library IEEE;
@@ -94,30 +105,33 @@ entity my7seg_tb is
 end my7seg_tb;
 
 architecture Behavioral of my7seg_tb is
-constant Frequency: integer := 100;
-constant Period: time := 1000ms/Frequency;
-signal clk: std_logic := '1';
-signal czujnik: std_logic_vector (1 downto 0) := "00";
+signal in_clk: std_logic := '0';
+signal alarm: std_logic := '0';
+signal czujnik: std_logic_vector(1 downto 0) := "00";
 begin
-UTT: entity work.my7seg 
-generic map(Frequency=>Frequency)
-port map (clk=>clk,
-          czujnik=>czujnik);
-
-clk <=not clk after period/2;
-
-ludziki: process begin
-    czujnik <="00";
+UTT: entity work.my7seg port map(
+                                 clk=>in_clk,
+                                 alarm=>alarm,
+                                 czujnik=>czujnik);
+zegar: process begin
+    in_clk<='1';
+    wait for 50ns;
+    in_clk<='0';
+    wait for 50ns;
+end process;
+czujka: process begin
+    czujnik <= "00";
     wait for 8000ms;
-    czujnik <="10";
-    wait for 11000ms;
-    czujnik<="11";
+    czujnik<= "01";
+    wait for 5000ms;
+    czujnik<="00";
+    wait for 2000ms;
+    czujnik <= "11";
     wait for 4000ms;
 end process;
 end Behavioral;
 
 ################################################## 7seg disp ##################################################
-
 
 ## Clock signal
 ##Bank = 35, Pin name = IO_L12P_T1_MRCC_35,					Sch name = CLK100MHZ
@@ -261,24 +275,25 @@ set_property PACKAGE_PIN N6 [get_ports {anody[0]}]
 set_property PACKAGE_PIN M6 [get_ports {anody[1]}]					
 	set_property IOSTANDARD LVCMOS33 [get_ports {anody[1]}]
 ##Bank = 34, Pin name = IO_L4P_T0_34,						Sch name = AN2
-#set_property PACKAGE_PIN M3 [get_ports {an[2]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {an[2]}]
+set_property PACKAGE_PIN M3 [get_ports {anody[2]}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {anody[2]}]
 ##Bank = 34, Pin name = IO_L13_T2_MRCC_34,					Sch name = AN3
-#set_property PACKAGE_PIN N5 [get_ports {an[3]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {an[3]}]
+set_property PACKAGE_PIN N5 [get_ports {anody[3]}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {anody[3]}]
 ##Bank = 34, Pin name = IO_L3P_T0_DQS_34,					Sch name = AN4
-#set_property PACKAGE_PIN N2 [get_ports {an[4]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {an[4]}]
+set_property PACKAGE_PIN N2 [get_ports {anody[4]}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {anody[4]}]
 ##Bank = 34, Pin name = IO_L16N_T2_34,						Sch name = AN5
-#set_property PACKAGE_PIN N4 [get_ports {an[5]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {an[5]}]
+set_property PACKAGE_PIN N4 [get_ports {anody[5]}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {anody[5]}]
 ##Bank = 34, Pin name = IO_L1P_T0_34,						Sch name = AN6
-#set_property PACKAGE_PIN L1 [get_ports {an[6]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {an[6]}]
+set_property PACKAGE_PIN L1 [get_ports {anody[6]}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {anody[6]}]
 ##Bank = 34, Pin name = IO_L1N_T034,							Sch name = AN7
-#set_property PACKAGE_PIN M1 [get_ports {an[7]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {an[7]}]
-  ############################################ Doc #########################################
+set_property PACKAGE_PIN M1 [get_ports {anody[7]}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {anody[7]}]
+
+############################################ Doc #########################################
 
 https://cdn-reichelt.de/documents/datenblatt/B300/DIGILENT_NEXYS4-_ENG_TDS.pdf
  
