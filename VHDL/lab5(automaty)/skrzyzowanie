@@ -1,0 +1,66 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+
+entity Skrzyzowanie is
+    Port ( clk : in STD_LOGIC;
+           kier1: out std_logic_vector(2 downto 0);
+           kier2: out std_logic_vector(2 downto 0));
+end Skrzyzowanie;
+
+architecture Behavioral of Skrzyzowanie is
+type obiekt is ( s0,s1,s2,s3,s4,s5,s6,s7);
+signal kierunek: obiekt;
+begin
+process(kierunek) begin
+case kierunek is
+    when s0 => kier1<="100";kier2<="001";
+    when s1 => kier1<="100";kier2<="010";
+    when s2 => kier1<="100";kier2<="100";
+    when s3 => kier1<="110";kier2<="100";
+    when s4 => kier1<="001";kier2<="100";
+    when s5 => kier1<="010";kier2<="100";
+    when s6 => kier1<="100";kier2<="100";
+    when s7 => kier1<="100";kier2<="110";
+end case;
+end process;
+
+
+ruch: process (clk)
+    variable zboczki: integer :=0;
+begin
+    if(rising_edge(clk)) then
+        zboczki := zboczki + 1;
+        case kierunek is
+        when s0 => if zboczki > 20 then zboczki := 0; kierunek <=s1; end if;
+        when s1 => if zboczki > 4 then zboczki := 0; kierunek <=s2; end if;
+        when s2 => if zboczki > 5 then zboczki := 0; kierunek <=s3; end if;
+        when s3 => if zboczki > 4 then zboczki := 0; kierunek <=s4; end if;
+        when s4 => if zboczki > 20 then zboczki := 0; kierunek <=s5; end if;
+        when s5 => if zboczki > 4 then zboczki := 0; kierunek <= s6; end if;
+        when s6 => if zboczki > 5 then zboczki := 0; kierunek <= s7; end if;
+        when s7 => if zboczki > 4 then zboczki := 0; kierunek <= s0; end if;
+        end case;
+    end if;
+end process;
+end Behavioral;
+
+########################################################### TB ####################################################
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+entity skrzyzowanie_tb is
+--  Port ( );
+end skrzyzowanie_tb;
+
+architecture Behavioral of skrzyzowanie_tb is
+signal clk: std_logic;
+begin
+UTT: entity work.skrzyzowanie port map(clk=>clk);
+process begin
+    clk<='0';
+    wait for 50ns;
+    clk<='1';
+    wait for 50ns;
+end process;
+
+end Behavioral;
