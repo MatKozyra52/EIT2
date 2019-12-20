@@ -1,7 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../sumsubu2.srcs/sources_1/new/sumsub_u2.vhd" \
-"../../../../sumsubu2.srcs/sim_1/new/sumsub_u2_tb.vhd" \
-
-# Do not sort compile order
-nosort

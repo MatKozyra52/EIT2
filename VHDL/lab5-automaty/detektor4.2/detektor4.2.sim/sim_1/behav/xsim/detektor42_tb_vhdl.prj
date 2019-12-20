@@ -1,0 +1,7 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../detektor4.2.srcs/sources_1/new/detektor42.vhd" \
+"../../../../detektor4.2.srcs/sim_1/new/detektor42_tb.vhd" \
+
+# Do not sort compile order
+nosort

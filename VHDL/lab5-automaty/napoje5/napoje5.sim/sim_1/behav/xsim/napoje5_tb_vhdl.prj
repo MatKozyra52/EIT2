@@ -1,7 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../napoje5.srcs/sources_1/new/napoje5.vhd" \
-"../../../../napoje5.srcs/sim_1/new/napoje5_tb.vhd" \
-
-# Do not sort compile order
-nosort

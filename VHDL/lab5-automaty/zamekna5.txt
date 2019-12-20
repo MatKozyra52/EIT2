@@ -1,0 +1,106 @@
+----------------------------------------------------------------------------------
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+
+entity zamekna5 is
+    Port ( en : in STD_LOGIC:='0';
+           wej : in STD_LOGIC_VECTOR (2 downto 0);
+           ok : out STD_LOGIC:='0');
+end zamekna5;
+
+architecture Behavioral of zamekna5 is
+type stany is (ne, ok1, ok2, ok3, otwar);
+signal zamek : stany := ne ;
+begin
+
+
+process (en, wej)
+constant l1: std_logic_vector(2 downto 0 ) := "011";
+constant l2: std_logic_vector(2 downto 0 ) := "010";
+constant l3: std_logic_vector(2 downto 0 ) := "001";
+constant l4: std_logic_vector(2 downto 0 ) := "101";
+begin
+
+if (en'event and en='1') then
+    case (zamek) is
+        when ne=> ok<='0';
+                    if wej = l1 then zamek<=ok1;
+                    else zamek<=ne; end if;
+        when ok1=>if wej = l2 then zamek<=ok2;
+                    elsif wej = l1 then zamek<=ok1;
+                    else zamek<=ne; end if;
+        when ok2=> if wej = l3 then zamek<=ok3;
+                    else zamek<=ne; end if;
+        when ok3=>if wej = l4 then zamek<=otwar;
+                    else zamek<=ne; end if;
+        when otwar=> ok<='1'; zamek<=ne;
+    end case;
+end if;
+
+end process;
+
+
+end Behavioral;
+////////////////////////////////////////////////////////////////////////////
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity zamekna5_tb is
+--  Port ( );
+end zamekna5_tb;
+
+architecture Behavioral of zamekna5_tb is
+signal en, ok : std_logic:='0';
+signal wej : std_logic_vector(2 downto 0):="000";
+begin
+utt: entity work.zamekna5 port map (en=>en,
+                                    ok=>ok,
+                                    wej=>wej);
+process begin
+    wej<="011";
+    wait for 10ns;
+    en<='1';
+    wait for 5ns;
+    en<='0';
+    wait for 20ns;
+    wej<="011";
+    wait for 10ns;
+    en<='1';
+    wait for 5ns;
+    en<='0';
+    wait for 20ns;
+    wej<="010";
+    wait for 10ns;
+    en<='1';
+    wait for 5ns;
+    en<='0';
+    wait for 20ns;
+    wej<="001";
+    wait for 10ns;
+    en<='1';
+    wait for 5ns;
+    en<='0';
+    wait for 20ns;
+    wej<="101";
+    wait for 10ns;
+    en<='1';
+    wait for 5ns;
+    en<='0';
+    wait for 20ns;
+    wej<="101";
+    wait for 10ns;
+    en<='1';
+    wait for 5ns;
+    en<='0';
+    wait for 20ns;
+    en<='1';
+    wait for 5ns;
+    en<='0';
+    wait;
+end process;
+
+end Behavioral;

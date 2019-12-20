@@ -1,0 +1,61 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+
+entity mnozenie is
+    Port ( wej : in STD_LOGIC_VECTOR (3 downto 0);
+           wyj : out STD_LOGIC_VECTOR (7 downto 0);
+           clk : in STD_LOGIC);
+end mnozenie;
+
+architecture Behavioral of mnozenie is
+signal A : std_logic_vector(3 downto 0);
+signal B : std_logic_vector(3 downto 0);
+signal Y : std_logic_vector(7 downto 0):="00000000";
+signal dwyj : std_logic_vector(7 downto 0):="00000000";
+type stany is (spr, przesun, dodaj, przypisz);
+signal mnozenie : stany := przypisz;
+begin
+
+A<="0101";
+
+przejscia: process (clk, mnozenie)
+variable wynik: integer :=0;
+begin
+if (clk'event and clk='1') then
+    case mnozenie is
+        when przypisz=> B<=wej; mnozenie<=spr;
+        when spr =>if B(B'right) = '1' then mnozenie<=dodaj; else mnozenie<=przesun; end if;
+        when przesun=> wynik:=wynik+1; B<='0' & B(3 downto 1); dwyj<=Y(0) & dwyj(7 downto 1); Y<='0' & Y(7 downto 1); mnozenie<=spr;
+        when dodaj=>Y<=Y+A; mnozenie<=przesun;
+    end case;
+    if wynik = 9 then wyj<=dwyj; wynik:=0; end if;
+end if;
+end process;
+end Behavioral;
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////TTTTTTBBBBBBBBBBBBBBBB///////////////
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity mnozenie_tb is
+--  Port ( );
+end mnozenie_tb;
+
+architecture Behavioral of mnozenie_tb is
+signal wej : std_logic_vector(3 downto 0):="1010";
+signal wyj : std_logic_vector(7 downto 0);
+signal clk : std_logic;
+begin
+utt: entity work.mnozenie port map( wej=>wej, wyj=>wyj, clk=>clk);
+
+zegar: process begin
+clk<='0';
+wait for 5ns;
+clk<='1';
+wait for 5ns;
+end process;
+
+end Behavioral;

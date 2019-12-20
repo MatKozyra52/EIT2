@@ -1,7 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../hottobin.srcs/sources_1/new/hottobin.vhd" \
-"../../../../hottobin.srcs/sim_1/new/hottobin_tb.vhd" \
-
-# Do not sort compile order
-nosort

@@ -1,7 +1,0 @@
-Running: xsim.dir/bintou2_tb_behav/xsimk.exe -simmode gui -wdb bintou2_tb_behav.wdb -simrunnum 0 -socket 55839
-Design successfully loaded
-Design Loading Memory Usage: 5320 KB (Peak: 5320 KB)
-Design Loading CPU Usage: 15 ms
-Simulation completed
-Simulation Memory Usage: 5896 KB (Peak: 5896 KB)
-Simulation CPU Usage: 30 ms

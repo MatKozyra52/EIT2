@@ -1,7 +1,7 @@
-Running: xsim.dir/swiatla4_tb_behav/xsimk.exe -simmode gui -wdb swiatla4_tb_behav.wdb -simrunnum 0 -socket 51573
+Running: xsim.dir/swiatla4_tb_behav/xsimk.exe -simmode gui -wdb swiatla4_tb_behav.wdb -simrunnum 0 -socket 50212
 Design successfully loaded
-Design Loading Memory Usage: 5260 KB (Peak: 5260 KB)
+Design Loading Memory Usage: 5256 KB (Peak: 5256 KB)
 Design Loading CPU Usage: 46 ms
 Simulation completed
-Simulation Memory Usage: 5836 KB (Peak: 5836 KB)
-Simulation CPU Usage: 46 ms
+Simulation Memory Usage: 5828 KB (Peak: 5828 KB)
+Simulation CPU Usage: 405 ms

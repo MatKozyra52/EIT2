@@ -1,0 +1,78 @@
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+
+entity swiatla2x5 is
+    Port ( swiatla1 : out STD_LOGIC_VECTOR (2 downto 0);
+           swiatla2 : out STD_LOGIC_VECTOR (2 downto 0);
+           clk : in STD_LOGIC);
+end swiatla2x5;
+
+architecture Behavioral of swiatla2x5 is
+type stany is (s1, s2, s3, s4, s5, s6, s7, s8);
+signal swiatla : stany;
+begin
+
+wyjscie: process (clk, swiatla)
+begin
+if (clk'event and clk='1') then
+    case swiatla is
+        when s1=> swiatla1<="001"; swiatla2<="100";
+        when s2=> swiatla1<="010"; swiatla2<="100";
+        when s3=> swiatla1<="100"; swiatla2<="100";
+        when s4=> swiatla1<="100"; swiatla2<="110";
+        when s5=> swiatla1<="100"; swiatla2<="001";
+        when s6=> swiatla1<="100"; swiatla2<="010";
+        when s7=> swiatla1<="100"; swiatla2<="100";
+        when s8=> swiatla1<="110"; swiatla2<="100";
+    end case;
+end if;
+end process;
+
+zmiany: process (clk, swiatla)
+variable czas: integer:=0;
+begin
+if (clk'event and clk='1') then
+    czas := czas+1;
+    case swiatla is
+        when s1=> if czas > 10 then czas:=0; swiatla<=s2; end if;
+        when s2=> if czas > 2 then czas:=0; swiatla<=s3; end if;
+        when s3=> if czas > 3 then czas:=0; swiatla<=s4; end if;
+        when s4=> if czas > 2 then czas:=0; swiatla<=s5; end if;
+        when s5=> if czas > 10 then czas:=0; swiatla<=s6; end if;
+        when s6=> if czas > 2 then czas:=0; swiatla<=s7; end if;
+        when s7=> if czas > 3 then czas:=0; swiatla<=s8; end if;
+        when s8=> if czas > 2 then czas:=0; swiatla<=s1; end if;
+    end case;
+end if;
+end process;
+
+end Behavioral;
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+
+entity swiatla2x5_tb is
+--  Port ( );
+end swiatla2x5_tb;
+
+architecture Behavioral of swiatla2x5_tb is
+signal swiatla1, swiatla2 : std_logic_vector(2 downto 0):="100";
+signal clk : std_logic:='0';
+begin
+utt: entity work.swiatla2x5 port map (swiatla1=> swiatla1, swiatla2=>swiatla2, clk=>clk );
+
+zeg: process begin
+clk<='0';
+wait for 5ns;
+clk<='1';
+wait for 5ns;
+end process;
+
+end Behavioral;

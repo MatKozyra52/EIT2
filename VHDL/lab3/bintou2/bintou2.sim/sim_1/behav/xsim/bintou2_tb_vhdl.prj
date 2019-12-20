@@ -1,7 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../bintou2.srcs/sources_1/new/bintou2.vhd" \
-"../../../../bintou2.srcs/sim_1/new/bintou2_tb.vhd" \
-
-# Do not sort compile order
-nosort

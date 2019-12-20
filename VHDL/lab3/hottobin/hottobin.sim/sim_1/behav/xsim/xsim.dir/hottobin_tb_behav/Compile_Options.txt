@@ -1,1 +1,0 @@
--wto "daec99652a004114884e3376f520fe68" --incr --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "secureip" --snapshot "hottobin_tb_behav" "xil_defaultlib.hottobin_tb" -log "elaborate.log" 

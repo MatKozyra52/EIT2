@@ -1,4 +1,0 @@
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/acer/Documents/VHDL/lab3/sumsub/sumsub.srcs/sources_1/new/sumsub.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'sumsub'
-INFO: [VRFC 10-163] Analyzing VHDL file "C:/Users/acer/Documents/VHDL/lab3/sumsub/sumsub.srcs/sim_1/new/sumsub_tb.vhd" into library xil_defaultlib
-INFO: [VRFC 10-3107] analyzing entity 'sumsub_tb'

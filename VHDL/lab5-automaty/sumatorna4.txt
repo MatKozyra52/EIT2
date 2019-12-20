@@ -1,0 +1,109 @@
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+
+entity sumatorna4 is
+    Port ( clk : in STD_LOGIC;
+           wej : in STD_LOGIC_VECTOR (2 downto 0);
+           wyj : out STD_LOGIC);
+end sumatorna4;
+
+architecture Behavioral of sumatorna4 is
+type stany is (s00, s01, s11);
+signal sumator : stany := s00;
+begin
+
+process (clk, sumator) 
+begin
+    if clk'event and clk='1' then
+        case sumator is
+            when s00=>
+                    case wej is
+                        when "000"=> wyj<='0'; sumator<=s00;
+                        when "001"=> wyj<='1'; sumator<=s00;
+                        when "010"=> wyj<='1'; sumator<=s00;
+                        when "100"=> wyj<='1'; sumator<=s00;
+                        when "110"=> wyj<='0'; sumator<=s01;
+                        when "101"=> wyj<='0'; sumator<=s01;
+                        when "011"=> wyj<='0'; sumator<=s01;
+                        when "111"=> wyj<='1'; sumator<=s01;
+                        when others => wyj<='X'; sumator <=s00;
+                    end case;
+            
+            when s01=>
+                    case wej is
+                        when "000"=> wyj<='1'; sumator<=s00;
+                        when "001"=> wyj<='0'; sumator<=s01;
+                        when "010"=> wyj<='0'; sumator<=s01;
+                        when "100"=> wyj<='0'; sumator<=s01;
+                        when "110"=> wyj<='1'; sumator<=s01;
+                        when "101"=> wyj<='1'; sumator<=s01;
+                        when "011"=> wyj<='1'; sumator<=s01;
+                        when "111"=> wyj<='0'; sumator<=s11;
+                        when others => wyj<='X'; sumator <=s00;
+                    end case;
+                    
+            when s11=>
+                    case wej is
+                        when "000"=> wyj<='0'; sumator<=s01;
+                        when "001"=> wyj<='1'; sumator<=s01;
+                        when "010"=> wyj<='1'; sumator<=s01;
+                        when "100"=> wyj<='1'; sumator<=s01;
+                        when "110"=> wyj<='0'; sumator<=s11;
+                        when "101"=> wyj<='0'; sumator<=s11;
+                        when "011"=> wyj<='0'; sumator<=s11;
+                        when "111"=> wyj<='1'; sumator<=s11;
+                        when others => wyj<='X'; sumator <=s00;
+                    end case;
+                    
+            when others => sumator<= s00;
+        end case;
+    end if;
+end process;
+end Behavioral;
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+
+
+entity sumatorna4_tb is
+--  Port ( );
+end sumatorna4_tb;
+
+architecture Behavioral of sumatorna4_tb is
+signal wej : std_logic_vector(2 downto 0);
+signal clk, wyj : std_logic;
+constant czas :time :=5ns;
+begin
+utt: entity work.sumatorna4 port map (clk=>clk,
+                                      wej=>wej,
+                                      wyj=>wyj);
+
+zegar : process begin
+    clk<='0';
+    wait for czas;
+    clk<='1';
+    wait for czas;
+end process;
+
+wejscie: process begin
+    wej<="011";
+    wait for 2*czas;
+    wej<="011";
+    wait for 2*czas;
+    wej<="111";
+    wait for 2*czas;
+    wej<="011";
+    wait for 2*czas;
+    wej<="010";
+    wait for 2*czas;
+    wej<="000";
+    wait for 2*czas;
+    wej<="111";
+    wait for 2*czas;
+    wait;
+end process;
+end Behavioral;

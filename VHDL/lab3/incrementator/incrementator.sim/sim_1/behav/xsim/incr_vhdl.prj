@@ -1,6 +1,0 @@
-# compile vhdl design source files
-vhdl xil_defaultlib  \
-"../../../../incrementator.srcs/sources_1/new/incr.vhd" \
-
-# Do not sort compile order
-nosort

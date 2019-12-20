@@ -1,1 +1,0 @@
--wto "8a1b9fd0281a4d6eb42711f12602ac9c" --incr --debug "typical" --relax --mt "2" -L "xil_defaultlib" -L "secureip" --snapshot "d1z3_tb_behav" "xil_defaultlib.d1z3_tb" -log "elaborate.log" 
