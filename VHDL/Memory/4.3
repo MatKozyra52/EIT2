@@ -1,0 +1,105 @@
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+
+entity nic is
+port(clk, we: in std_logic:='1';
+     doZ: out std_logic_vector(7 downto 0));
+end nic;
+
+architecture Behavioral of nic is
+signal addrA, addrB, addrZ: std_logic_vector(3 downto 0):="0000";
+signal diA, diB, diZ, doA, doB: std_logic_vector(7 downto 0);
+
+begin
+
+                                    
+wpiszA: process (clk)
+variable wek: std_logic_vector( 7 downto 0 ) :="00000000";
+begin
+if (clk'event and clk='1') then
+    addrA<= addrA+1;
+    diA<=wek;
+    wek:="00000011" + wek;
+end if;
+end process;
+
+wpiszB: process (clk)
+variable wek: std_logic_vector( 7 downto 0 ) :="11111111";
+begin
+if (clk'event and clk='1') then
+    addrB<= addrB+1;
+    diB<=wek;
+    wek:=wek - "00000011";
+end if;
+end process;  
+  
+  
+porownaj: process (clk) begin
+if (clk'event and clk='1') then
+    addrZ<=addrA;
+    if (doA > doB) then
+        diZ<=doA;
+    else
+        diZ<=doB;
+    end if;
+end if;
+end process;
+              
+przypA: entity work.ram_dist port map(clk=>clk,
+                                    we=>we,
+                                    di=>diA,
+                                    do=>doA,
+                                    addr=>addrA);
+        
+przypB: entity work.ram_dist port map(clk=>clk,
+                                    we=>we,
+                                    di=>diB,
+                                    do=>doB,
+                                    addr=>addrB);
+                                    
+przypZ: entity work.ram_dist port map(clk=>clk,
+                                    we=>we,
+                                    di=>diZ,
+                                    do=>doZ,
+                                    addr=>addrA); 
+end Behavioral;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+
+
+entity projtb is
+--  Port ( );
+end projtb;
+
+architecture Behavioral of projtb is
+signal doZ: std_logic_vector(7 downto 0);
+signal clk, we: std_logic:='1';
+
+begin
+przyp: entity work.nic port map(doZ=>doZ,
+                                     clk=>clk,
+                                     we=>we);
+process begin
+clk<='0';
+wait for 10ns;
+clk<='1';
+wait for 10ns;
+end process;  
+
+process begin
+we<='0';
+wait for 200ns;
+we<='1';
+wait for 100ns;
+end process;
+               
+end Behavioral;
+
