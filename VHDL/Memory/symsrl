@@ -1,0 +1,55 @@
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.std_logic_unsigned.all;
+
+
+entity symstrtb is
+--  Port ( );
+end symstrtb;
+
+architecture Behavioral of symstrtb is
+signal awidth: integer := 4;
+signal clk, we, din, dout: std_logic;
+signal adr: std_logic_vector(0 to awidth-1);
+signal delay: integer := 4;
+
+
+begin
+przyp: entity work.srly port map(clk=>clk,
+                        we=>we,
+                        din=>din,
+                        dout=>dout,
+                        adr=>adr
+                        );
+clok: process begin
+    clk<='0';
+    wait for 10ns;
+    clk<='1';
+    wait for 10ns;
+end process;
+
+const: process begin
+    we<='1';
+    adr<="0000" + delay;
+    
+    wait;
+end process;
+
+dane: process begin
+    din<='1';
+    wait for 20ns;
+    din<='1';
+    wait for 20ns;
+    din<='0';
+    wait for 20ns;
+    din<='1';
+    wait for 20ns;
+    din<='1';
+    wait for 20ns;
+    din<='0';
+    wait for 20ns;
+    din<='0';
+    wait for 20ns;
+end process;
+end Behavioral;
