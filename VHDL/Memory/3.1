@@ -1,0 +1,55 @@
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+
+entity proj_tb is
+--  Port ( );
+end proj_tb;
+
+architecture Behavioral of proj_tb is
+signal clk, we : std_logic := '0';
+signal addrA : std_logic_vector(3 downto 0):="0000";
+signal diA, doA : std_logic_vector(7 downto 0):="00000000";
+signal addrB : std_logic_vector(9 downto 0):="0000000000";
+signal diB, doB : std_logic_vector(15 downto 0):="0000000000000000";
+begin
+przypisA: entity work.ram_dist port map(clk=>clk,
+                                    we=>we,
+                                    di=>diA,
+                                    do=>doA,
+                                    addr=>addrA);
+                                    
+przypisB: entity work.bram port map(clk=>clk,
+                                    we=>we,
+                                    di=>diB,
+                                    do=>doB,
+                                    addr=>addrB);
+                                    
+zegar_addr: process begin
+    clk<='0';
+    wait for 5ns;
+    clk<='1';
+    wait for 3ns;
+    addrA<=addrA + 1;
+    diA<= diA + 2;  
+    addrB<=addrB + 1;
+    diB<= diB + 2;
+    if addrA >= 15 then addrA<="0000"; end if;
+    if addrB >= 30 then addrB<="0000000000"; end if;
+    wait for 2ns;
+ end process;
+
+write_en: process begin
+    we<='1';
+    wait for 200ns;
+    we<='0';
+    wait for 10ns;
+end process;
+
+
+    
+
+end Behavioral;
