@@ -1,0 +1,87 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use ieee.std_logic_unsigned.all;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity jebac_tb is
+--  Port ( );
+end jebac_tb;
+
+architecture Behavioral of jebac_tb is
+signal clk,we: std_logic := '1';
+signal addr: std_logic_vector(3 downto 0) := "0000";
+signal dataIn1,dataIn2,dataIn3, przeslij: std_logic_vector(7 downto 0) := "00000000";
+signal dataOut1,dataOut2,dataOut3: std_logic_vector(7 downto 0) := "00000000";
+signal dejta: std_logic_vector(7 downto 0) := "00000000";
+signal empty: std_logic := '1';
+signal ktora: std_logic_vector (1 downto 0) := "00";
+begin
+pamiec1: entity work.ram_dist port map(
+                                    clk => clk,
+                                    we => we,
+                                    addr => addr,
+                                    di => dataIn1,
+                                    do => dataOut1   
+                                   );
+pamiec2: entity work.ram_dist port map(
+                                    clk => clk,
+                                    we => we,
+                                    addr => addr,
+                                    di => dataIn2,
+                                    do => dataOut2   
+                                   );
+pamiec3: entity work.ram_dist port map(
+                                    clk => clk,
+                                    we => we,
+                                    addr => addr,
+                                    di => dataIn3,
+                                    do => dataOut3
+                                    );   
+
+process (clk, empty)
+variable data2, dejta_var: std_logic_vector (7 downto 0);
+begin
+dejta_var := dejta;
+
+if (rising_edge(clk) and empty = '1') then
+    we <= '1';
+    dataIn1<=dejta_var;
+    data2 := (dejta_var + 3) xor (dejta_var);
+    dejta <= dejta_var + 1;
+    dataIn2<=data2;
+    ---------------------------------
+    addr <= addr + 1;
+    if addr = 15 then dejta <= "00000000"; end if;
+    
+end if;
+
+if (rising_edge(clk)) then
+       if ( dataOut1 > dataOut2) then
+        dataIn3 <= dataOut1;
+        ktora <= "01";
+        
+       elsif ( dataOut1 < dataOut2) then
+        dataIn3 <= dataOut2;
+        ktora <= "10";
+        
+        end if;
+end if;
+end process; 
+
+
+
+zegar: process begin
+    clk <= '1';
+    wait for 20ns;
+    clk <= '0';
+    wait for 20ns;
+    
+end process;
+end Behavioral;
