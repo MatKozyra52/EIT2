@@ -1,0 +1,74 @@
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.std_logic_unsigned.all;
+
+
+entity sinna2R is
+    Port ( clk : in STD_LOGIC;
+           wyj : out integer);
+end sinna2R;
+
+architecture Behavioral of sinna2R is
+signal addr: std_logic_vector (6 downto 0) := "0000000";
+signal data: std_logic_vector (7 downto 0);
+
+begin
+lut: entity work.rom_sin port map (clk=>clk, addr=>addr, data=>data);
+
+adresy: process (clk)
+variable adres: std_logic_vector(6 downto 0):= "0000000";
+begin
+if clk'event and clk='1' then addr<=adres; adres:=adres+1; end if;
+end process;
+
+dzialanie: process(clk)
+variable Vwyj : integer := 0;
+variable Vzas : integer := 200;
+begin
+if clk'event and clk='1' then
+Vwyj:=0;
+    if data(0)='1' then Vwyj:=Vwyj+Vzas/256; end if; 
+    if data(1)='1' then Vwyj:=Vwyj+Vzas/128; end if; 
+    if data(2)='1' then Vwyj:=Vwyj+Vzas/64; end if; 
+    if data(3)='1' then Vwyj:=Vwyj+Vzas/32; end if; 
+    if data(4)='1' then Vwyj:=Vwyj+Vzas/16; end if; 
+    if data(5)='1' then Vwyj:=Vwyj+Vzas/8; end if; 
+    if data(6)='1' then Vwyj:=Vwyj+Vzas/4; end if; 
+    if data(7)='1' then Vwyj:=Vwyj+Vzas/2; end if;
+    wyj<=Vwyj;
+end if;
+end process;
+
+end Behavioral;
+
+
+////////////////////////////////////////////////////////TTTTTTTTTTTTTTBBBBBBBBBBBBBBBBBBBBBBBBB/////////////////////////////////////////
+
+
+
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+
+
+entity sinna2R_tb is
+--  Port ( );
+end sinna2R_tb;
+
+architecture Behavioral of sinna2R_tb is
+signal wyj: integer;
+signal clk: std_logic;
+begin
+przyp: entity work.sinna2R port map (clk=>clk, wyj=>wyj);
+
+zeg: process begin 
+clk<='1';
+wait for 10ns;
+clk<='0';
+wait for 10ns;
+end process;
+
+end Behavioral;
