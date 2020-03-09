@@ -1,0 +1,22 @@
+nic specjalnego
+
+*vin wej 0 sin 0 1 159
+vin wej 0 pulse 0 1 1n 1n 1n 31.4ms 62.9ms  ; f3 = 6.29ms / 3.14ms	 50kHz to 20us / 10us
+
+*PULSE (V1 V2 TD TR TF PW PER) –
+*gdzie    V1 – wartoœæ pocz¹tkowa (w Voltach lub Amperach)
+*V2 – wartoœæ impulsu (w Voltach lub Amperach)
+*TD – czas opóŸnienia (w sekundach, wartoœæ wbudowana 0.0)
+*TR – czas narastania (w sekundach, wartoœæ wbudowana 0.0)
+*TF – czas opadania (w sekundach, wartoœæ wbudowana 0.0)
+*PW – szerokoœæ impulsu
+*PER – okres impulsu
+
+c1 wyj wej 1u 	   ; ic to napiêcie pocz¹tkowe na kondensatorze
+r1 0 wyj 1k
+
+*.ac dec 100 10 20k
+.tran 0.5m 150m 1m 0.5m
+.probe
+
+.end

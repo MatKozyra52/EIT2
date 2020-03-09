@@ -1,0 +1,12 @@
+oscyloskop
+.param kon = 2p
+vin wej 0 pulse 3 0 1n 1n 1n 100u 200u
+rs wej wyj 9meg
+cs wej wyj {kon}
+rosc wyj 0 1meg
+cosc wyj 0 18p
+
+.tran 10u 250u 1u
+.step oct param kon 0.5p 300p 5
+.probe
+.end
